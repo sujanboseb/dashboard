@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MongoDB Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <h2>Sales Dashboard</h2>
+    <canvas id="salesChart"></canvas>
+
+    <script>
+        async function fetchData() {
+            const response = await fetch("/api/data");
+            const data = await response.json();
+
+            // Extract data for the chart
+            const labels = data.map(item => item["Product Name"]);
+            const salesData = data.map(item => item.Amount);
+
+            // Render Chart.js bar chart
+            const ctx = document.getElementById("salesChart").getContext("2d");
+            new Chart(ctx, {
+                type: "bar",
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: "Sales Amount",
+                        data: salesData,
+                        backgroundColor: "blue"
+                    }]
+                }
+            });
+        }
+
+        fetchData();
+    </script>
+
+</body>
+</html>
